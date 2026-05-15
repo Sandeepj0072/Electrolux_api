@@ -1,4 +1,25 @@
 from utils.api_client import APIClient
+from utils.file_reader import FileReader
+
+
+def test_create_post_with_invalid_data():
+
+    payload = FileReader.read_json(
+        "data/invalid_payload.json"
+    )
+
+    response = APIClient.post("/posts", payload)
+
+    print(response.status_code)
+    print(response.json())
+
+    assert response.status_code in [400, 201]
+
+    data = response.json()
+
+    assert data["title"] == payload["title"]
+    assert data["body"] == payload["body"]
+
 
 
 def test_invalid_post():
